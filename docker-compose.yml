@@ -1,0 +1,12 @@
+# Compose is a tool for defining and running multi-container Docker applications
+version: '3.7' # Docker version
+
+# define services (can also be containers)
+services:
+  # OUR project image
+  service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
