@@ -1,0 +1,11 @@
+# Compose is a tool for defining and running multi-container Docker applications
+version: '3.7' # Docker version
+services: # service definition contains configuration that is applied to each container started for that service  
+  api:
+    build: #configuration options that are applied at build time
+      context: . #path to a directory containing a Dockerfile
+      dockerfile: Dockerfile #path to the Dockerfile
+    ports: 
+      - 4998:5000
+    environment:
+      ASPNETCORE_URLS: http://+:5000

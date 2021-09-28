@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestDeploy.Controllers
+namespace TestDeployment.Controllers
 {
     [ApiController]
     [Route("[controller]")]

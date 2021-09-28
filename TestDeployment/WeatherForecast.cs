@@ -1,6 +1,6 @@
 using System;
 
-namespace TestDeploy
+namespace TestDeployment
 {
     public class WeatherForecast
     {

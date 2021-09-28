@@ -1,0 +1,5 @@
+**/bin/*
+**/obj/*
+**/.vs/*
+
+# .dockerignore file is for ignoring mentioned files and folders in the final docker image. It can help reduce image size and remove unnecessary files and maybe some secrets 
