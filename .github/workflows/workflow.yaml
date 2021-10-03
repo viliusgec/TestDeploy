@@ -34,7 +34,7 @@ jobs:
       run: docker push registry.digitalocean.com/vilgec-personal-registry/testdeployment_api:$GIT_TAG_NAME
 
     - name: Update deployment file
-      run: sed -i 's|<IMAGE>|'$GIT_TAG_NAME'|' $GITHUB_WORKSPACE/manifest.yaml
+      run: sed -i 's|<IMAGE>|'$GIT_TAG_NAME'|' $GITHUB_WORKSPACE/TestDeployment/manifest.yaml
 
     - name: Save DigitalOcean kubeconfig with short-lived credentials
       run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 testdeployment
