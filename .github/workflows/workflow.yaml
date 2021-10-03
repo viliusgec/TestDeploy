@@ -40,4 +40,4 @@ jobs:
       run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 testdeployment
 
     - name: Deploy to DigitalOcean Kubernetes
-      run: kubectl apply -f $GITHUB_WORKSPACE/manifest.yaml
+      run: kubectl apply -f $GITHUB_WORKSPACE/TestDeployment/manifest.yaml
