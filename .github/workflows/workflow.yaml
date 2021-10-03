@@ -1,7 +1,7 @@
 on:
   push:
-    branches:
-      - main
+    tags:
+    - deploy-*
     paths:
       - 'TestDeployment/**'
       - 'TestDeployment/Dockerfile'
@@ -17,8 +17,11 @@ jobs:
     - name: Checkout main
       uses: actions/checkout@main
 
+    - name: Get tag name
+      uses: olegtarasov/get-tag@v2
+
     - name: Build container image
-      run: docker build -t registry.digitalocean.com/vilgec-personal-registry/testdeployment_api:lastest .
+      run: docker build -t registry.digitalocean.com/vilgec-personal-registry/testdeployment_api:$GIT_TAG_NAME .
 
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
@@ -29,4 +32,4 @@ jobs:
       run: doctl registry login --expiry-seconds 600
 
     - name: Push image to DigitalOcean Container Registry
-      run: docker push registry.digitalocean.com/vilgec-personal-registry/testdeployment_api:lastest
+      run: docker push registry.digitalocean.com/vilgec-personal-registry/testdeployment_api:$GIT_TAG_NAME
