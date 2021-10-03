@@ -1,7 +1,7 @@
 on:
   push:
     tags:
-    - deploy-*
+    - *
     paths:
       - 'TestDeployment/**'
       - 'TestDeployment/Dockerfile'
