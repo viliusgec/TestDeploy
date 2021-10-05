@@ -17,24 +17,3 @@ pipeline:
     when:
       event:
         exclude: [deployment]
-
-# Publish project
-  publish:
-    image: mcr.microsoft.com/dotnet/sdk:5.0
-    commands:
-      - dotnet publish --configuration ${DOTNET_CONFIGURATION=Release} --output $${DRONE_WORKSPACE}/output /p:Version=${DRONE_TAG##v} ./src/Adform.Internship.Kaunas.CurrencyRates.Service
-    # Do the step when tag event
-    when:
-      event: [tag]
-
-# Create docker image
-  docker-image:
-    image: docker.artifactory.adform.com/drone-plugins/docker
-    repo: docker.artifactory.adform.com/${DRONE_REPO,,}
-    cache_from: docker.artifactory.adform.com/${DRONE_REPO,,}:latest
-    tags:
-      - "${DRONE_COMMIT_SHA:0:10}"
-      - "${DRONE_TAG##v}"
-      - latest
-    when:
-      event: [tag]
