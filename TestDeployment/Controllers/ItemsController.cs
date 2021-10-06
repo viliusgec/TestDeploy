@@ -132,7 +132,7 @@ namespace TestDeployment.Controllers
             {
                 return NotFound("Item not found");
             }
-
+            playerItems.Remove(playerItem);
             items.Remove(items.First(x => x.Id == playerItem.ItemId));
             return NoContent();
         }
