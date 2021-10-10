@@ -7,10 +7,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestDeployment.Models
 {
+    [Table("Users", Schema = "Clicker")]
     public class User
     {
         [Key]
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         [Column(TypeName = "varchar(50)")]
         public string Password { get; set; }

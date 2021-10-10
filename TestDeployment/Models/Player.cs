@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestDeployment.Models
 {
+    [Table("Players", Schema = "Clicker")]
     public class Player
     {
         [Key]

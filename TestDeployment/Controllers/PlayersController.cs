@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Dapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,26 +17,26 @@ namespace TestDeployment.Controllers
     [ApiController]
     public class PlayersController : ControllerBase
     {
-        private static readonly List<Player> players = new List<Player>
+        private readonly DatabaseContext _context;
+        public PlayersController(DatabaseContext context)
         {
-           new Player{ Username = "PlayerOne", InventorySpace=5, BattleState = true, Money = 500 },
-           new Player{ Username = "PlayerTwo", InventorySpace=5, BattleState = true, Money = 500 },
-           new Player{ Username = "PlayerThree", InventorySpace=5, BattleState = true, Money = 500 },
-           new Player{ Username = "PlayerFour", InventorySpace=5, BattleState = true, Money = 500 },
-        };
+            _context = context;
+        }
 
         // GET: api/<PlayersController>
+
         [HttpGet]
         public IEnumerable<Player> Get()
         {
-            return players;
+            return _context.Players.ToList();
         }
 
         // GET api/<PlayersController>/5
         [HttpGet("{id}")]
+        [Authorize (Roles = "Admin")]
         public ActionResult<Player> Get(string id)
         {
-            var player = players.FirstOrDefault(a => a.Username == id);
+            var player = _context.Players.FirstOrDefault(x => x.Username == id);
             if(player == null)
             {
                 return NotFound("Player not found");
@@ -44,11 +48,20 @@ namespace TestDeployment.Controllers
         [HttpPost]
         public ActionResult<Player> Post([FromBody] Player player)
         {
-            if (players.FirstOrDefault(x => x.Username == player.Username) != null)
+            if (_context.Players.FirstOrDefault(x => x.Username == player.Username) != null)
             {
                 return Conflict();
             }
-            players.Add(player);
+
+            _context.Players.Add(player);
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
             return CreatedAtAction("Get", new { id = player.Username }, player);
         }
 
@@ -60,13 +73,25 @@ namespace TestDeployment.Controllers
             {
                 return BadRequest();
             }
-            var player = players.FirstOrDefault(a => a.Username == id);
-            if (player == null)
+
+            _context.Entry(value).State = EntityState.Modified;
+
+            try
             {
-                return NotFound("Player not found");
+                _context.SaveChanges();
             }
-            players.Remove(player);
-            players.Add(value);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (_context.Players.FirstOrDefault(x => x.Username == value.Username) == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
             return Ok(value);
         }
 
@@ -74,12 +99,15 @@ namespace TestDeployment.Controllers
         [HttpDelete("{id}")]
         public ActionResult<Player> Delete(string id)
         {
-            var player = players.FirstOrDefault(a => a.Username == id);
+            var player = _context.Players.FirstOrDefault(x => x.Username == id);
             if (player == null)
             {
-                return NotFound("Player not found");
+                return NotFound();
             }
-            players.Remove(player);
+
+            _context.Players.Remove(player);
+            _context.SaveChanges();
+
             return NoContent();
         }
     }
