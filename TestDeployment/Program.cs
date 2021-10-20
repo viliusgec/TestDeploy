@@ -21,6 +21,15 @@ namespace TestDeployment
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+            .ConfigureAppConfiguration((ctx, builder) =>
+                {
+                    ctx.Configuration = builder.SetBasePath(ctx.HostingEnvironment.ContentRootPath)
+                        .AddJsonFile("appsettings.json")
+                        .AddJsonFile($"appsettings.{ctx.HostingEnvironment.EnvironmentName}.json", true)
+                        .AddEnvironmentVariables()
+                        .Build();
+                    Console.WriteLine(ctx.HostingEnvironment.EnvironmentName);
                 });
     }
 }
