@@ -61,8 +61,10 @@ namespace TestDeployment
                 });
             });
 
+            string databaseConnectionString = Configuration.GetSection("Database")["ConnectionString"] + Configuration.GetSection("Database")["Password"];
+
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseNpgsql(Configuration.GetSection("Database")["ConnectionString"]));
+                options.UseNpgsql(databaseConnectionString));
 
             var key = Encoding.UTF8.GetBytes("1234567890123456");
 
