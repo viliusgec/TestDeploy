@@ -46,6 +46,7 @@ namespace TestDeployment.Controllers
 
         // POST api/<PlayersController>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult<Player> Post([FromBody] Player player)
         {
             if (_context.Players.FirstOrDefault(x => x.Username == player.Username) != null)
@@ -67,6 +68,7 @@ namespace TestDeployment.Controllers
 
         // PUT api/<PlayersController>/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public ActionResult<Player> Put(string id, [FromBody] Player value)
         {
             if (id != value.Username)
@@ -97,6 +99,7 @@ namespace TestDeployment.Controllers
 
         // DELETE api/<PlayersController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public ActionResult<Player> Delete(string id)
         {
             var player = _context.Players.FirstOrDefault(x => x.Username == id);

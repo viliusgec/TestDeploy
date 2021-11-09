@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestDeployment.Models
 {
+    [Table("Items", Schema = "Clicker")]
     public class Item
     {
         [Key]
@@ -15,16 +16,13 @@ namespace TestDeployment.Models
         [Column(TypeName = "varchar(50)")]
         public string Name { get; set; }
 
-        [Column(TypeName = "varchar(50)")]
-        public string Requirements { get; set; }
-
-        [Column(TypeName = "varchar(50)")]
-        public string Description { get; set; }
-
         [Column(TypeName = "int)")]
         public int Ammount { get; set; }
 
         [Column(TypeName = "bool)")]
         public bool IsEquiped { get; set; }
+
+        [Column(TypeName = "varchar(50)")]
+        public string PlayerName { get; set; }
     }
 }

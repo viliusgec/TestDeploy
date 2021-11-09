@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace TestDeployment.Models
 {
@@ -14,5 +10,8 @@ namespace TestDeployment.Models
         }
         public DbSet<Player> Players { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Skill> Skills { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<PlayerItems> PlayerItems { get; set; }
     }
 }
