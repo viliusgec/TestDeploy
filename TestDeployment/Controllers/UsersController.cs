@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,29 @@ namespace TestDeployment.Controllers
             }
             else
                 return BadRequest(new { message = "Username or password is incorrect." });
+        }
+
+        [HttpPost]
+        [Route("Register")]
+        public ActionResult<User> Register(User user)
+        {
+            user.Role = "Player";
+            if (_context.Users.FirstOrDefault(x => x.Username == user.Username) != null)
+            {
+                return Conflict();
+            }
+
+            _context.Users.Add(user);
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
+
+            return CreatedAtAction("Login", user);
         }
     }
 }
