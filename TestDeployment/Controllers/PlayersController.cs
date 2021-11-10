@@ -26,6 +26,7 @@ namespace TestDeployment.Controllers
         // GET: api/<PlayersController>
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IEnumerable<Player> Get()
         {
             return _context.Players.ToList();
